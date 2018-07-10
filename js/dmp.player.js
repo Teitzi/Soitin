@@ -22,7 +22,7 @@ dmp.player = dmp.player || {};
 /**
  * Checks if the HTML5 player of the current browser can play most common file formats.
  */
-dmp.player.html5PlayerIsWorking = function(){
+dmp.player.html5PlayerIsWorking = function() {
   try {
     var html5Player = new Audio();
     return html5Player.canPlayType('audio/mpeg') && html5Player.canPlayType('audio/mp4');
@@ -37,7 +37,7 @@ dmp.player.html5PlayerIsWorking = function(){
  */
 dmp.player.hasFlash = false;
 dmp.player.flash = "no_flash";
-dmp.player.initPlayer = function(){
+dmp.player.initPlayer = function() {
   var solution = "html";
   // In the HTML5 player support most formats (like Chrome) then we only use the HTML5 player and not the Flash player.
   if (swfobject.hasFlashPlayerVersion("9.0.0")) {
@@ -55,7 +55,7 @@ dmp.player.initPlayer = function(){
   // Initialize the Player.
   $("#jqueryPlayerContainer").jPlayer({
       ended: dmp.player.playNext,
-      swfPath: "/js",
+      swfPath: "/third-party/jplayer/js",
       errorAlerts: false,
       solution: solution,
       supplied: "mp3,m4a,wav,oga,webma,fla,flac",
@@ -73,7 +73,7 @@ dmp.player.initPlayer = function(){
                 .addClass("error").attr("colspan", "2")
                 .attr("title", "Your browser might not support this audio format." +
                     (dmp.player.hasFlash ? "" : " Try installing Flash."));
-              $(".title", $("#file-" + dmp.playlist.getCurrentSongId())).text("");
+              $(".title", $("#file-" + dmp.playlist.getCurrentSongId())).hide();
 
               // Tracking errors in GA.
               if(ga && dmp.player.currentMime.indexOf(dmp.playlist.PLAYLIST_MIME_TYPE) === -1 &&
@@ -218,6 +218,7 @@ dmp.player.playFile = function(songId, stop, tracktime) {
           $("#file-" + songId).addClass("playing");
           if (dmp.player.currentlyLoaded != fileUrl) {
             var setMediaValue = {};
+            fileExtension = fileExtension.toLowerCase();
             // map some extensions
             var extensionMapping = {
                 "ogg":"oga",
@@ -292,7 +293,7 @@ dmp.player.playFile = function(songId, stop, tracktime) {
 };
 
 // Key binding shortcuts
-$(document).keydown(function(e){
+$(document).keydown(function(e) {
   // Right arrow key.
   if (e.keyCode == 39) {
       if(ga) {
@@ -310,5 +311,3 @@ $(document).keydown(function(e){
     return false;
   }
 });
-
-
